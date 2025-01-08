@@ -1,8 +1,21 @@
 // components/PDFPreview.js
 import React from 'react';
+import { pdf } from '@react-pdf/renderer';
+import InvoiceTemplate from './InvoiceTemplate';
 
 const PDFPreview = ({ job, onClose }) => {
-  const pdfUrl = `http://localhost:5000/api/generate-pdf/${job.id}`;
+  const [pdfUrl, setPdfUrl] = React.useState(null);
+
+  React.useEffect(() => {
+    const generateAndPreviewPDF = async () => {
+      // Generate the PDF blob
+      const blob = await pdf(<InvoiceTemplate job={job} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+    };
+
+    generateAndPreviewPDF();
+  }, [job]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">

@@ -70,7 +70,7 @@ const SheetData = () => {
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Sealing 2025</h2>
       <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
         <table className="min-w-full">
-          <thead className="bg-blue-600 text-white">
+          <thead className="bg-black text-white">
             <tr>
               <th className="px-6 py-3 text-left">Date</th>
               <th className="px-6 py-3 text-left">Name</th>
@@ -95,7 +95,7 @@ const SheetData = () => {
                   >
                     {i === 7 ? ( // Checkmark in the 8th column (index 7)
                       cell === 'TRUE' ? (
-                        <span className="text-green-600">✓</span> // Display a checkmark if TRUE
+                        <span className="text-black-600">✓</span> // Display a checkmark if TRUE
                       ) : (
                         <span className="text-gray-400">Click to complete</span> // Placeholder text
                       )
@@ -104,7 +104,7 @@ const SheetData = () => {
                         href={getGoogleMapsLink(cell)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition duration-200"
+                        className="inline-flex items-center px-4 py-2 bg-blue-100 text-black-800 rounded-lg hover:bg-blue-200 transition duration-200"
                         title="View on Google Maps" // Tooltip
                       >
                         <svg

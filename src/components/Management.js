@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import PDFPreview from '../components/PDFPreview'; // Import the preview component
 
 const Management = () => {
   const [completedJobs, setCompletedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [previewJob, setPreviewJob] = useState(null); // State to control preview
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch data from Google Sheets
         const response = await axios.get('http://localhost:5000/api/sheet-data');
         const data = response.data;
 
-        // Filter rows where the "Completed" column (index 7) is 'TRUE'
         const completedJobs = data
-          .filter((row) => row[7] === 'TRUE') // Only include rows where the 8th column is 'TRUE'
+          .filter((row) => row[7] === 'TRUE')
           .map((row, index) => ({
-            id: index + 1, // Use row index as ID (or use a unique column from the sheet)
-            name: row[1], // Name from the sheet (assuming index 1 is the name column)
-            date: row[0], // Date from the sheet (assuming index 0 is the date column)
-            phone: row[2], // Phone from the sheet (assuming index 2 is the phone column)
-            address: row[3], // Address from the sheet (assuming index 3 is the address column)
-            email: row[4], // Email from the sheet (assuming index 4 is the email column)
-            info: row[5], // Info from the sheet (assuming index 5 is the info column)
-            price: row[6], // Price from the sheet (assuming index 6 is the price column)
+            id: index + 1,
+            name: row[1],
+            date: row[0],
+            phone: row[2],
+            address: row[3],
+            email: row[4],
+            info: row[5],
+            price: row[6],
           }));
 
         setCompletedJobs(completedJobs);
@@ -40,13 +38,6 @@ const Management = () => {
 
     fetchData();
   }, []);
-
-  const generatePDF = (job) => {
-    const doc = new jsPDF();
-    doc.text(`Invoice for ${job.name}`, 10, 10);
-    // Add more details to the PDF as needed
-    doc.save(`invoice_${job.id}.pdf`);
-  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -66,15 +57,19 @@ const Management = () => {
             <p>Info: {job.info}</p>
             <p>Price: {job.price}</p>
             <button
-              onClick={() => generatePDF(job)}
-              className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => setPreviewJob(job)} // Show preview
+              className="mt-2 bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
             >
-              Generate Invoice
+              Preview Invoice
             </button>
           </div>
         ))
       ) : (
         <p>No completed jobs found.</p>
+      )}
+
+      {previewJob && (
+        <PDFPreview job={previewJob} onClose={() => setPreviewJob(null)} />
       )}
     </div>
   );

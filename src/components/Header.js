@@ -10,9 +10,12 @@ const Header = ({ isLoggedIn, onLogout }) => {
   };
 
   return (
-    <nav className="bg-blue-600 p-4 shadow-lg">
+    <nav className="bg-black p-4 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-white text-xl font-bold hover:text-blue-200">
+        <Link
+          to="/"
+          className="text-white text-xl font-bold hover:text-gray-400 transition-all duration-300 hover:scale-110"
+        >
           Wegener Sealing
         </Link>
         <div>
@@ -20,25 +23,25 @@ const Header = ({ isLoggedIn, onLogout }) => {
             <div className="flex">
               <Link
                 to="/"
-                className={`mr-4 ${
-                  isActive('/') ? 'text-blue-200 font-semibold' : 'text-white hover:text-blue-200'
+                className={`mr-4 transition-all duration-300 hover:scale-110 ${
+                  isActive('/') ? 'text-gray-400 font-semibold' : 'text-white hover:text-gray-400'
                 }`}
               >
                 Sheet Data
               </Link>
               <Link
                 to="/management"
-                className={`mr-4 ${
+                className={`mr-4 transition-all duration-300 hover:scale-110 ${
                   isActive('/management')
-                    ? 'text-blue-200 font-semibold'
-                    : 'text-white hover:text-blue-200'
+                    ? 'text-gray-400 font-semibold'
+                    : 'text-white hover:text-gray-400'
                 }`}
               >
                 Management
               </Link>
               <button
                 onClick={onLogout}
-                className="text-white hover:text-blue-200"
+                className="text-white hover:text-gray-400 transition-all duration-300 hover:scale-110"
               >
                 Logout
               </button>
@@ -46,8 +49,8 @@ const Header = ({ isLoggedIn, onLogout }) => {
           ) : (
             <Link
               to="/login"
-              className={`${
-                isActive('/login') ? 'text-blue-200 font-semibold' : 'text-white hover:text-blue-200'
+              className={`transition-all duration-300 hover:scale-110 ${
+                isActive('/login') ? 'text-gray-400 font-semibold' : 'text-white hover:text-gray-400'
               }`}
             >
               Login
