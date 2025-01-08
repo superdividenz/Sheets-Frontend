@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // For navigation
+import DataContext from '../DataContext';
 
 const SheetData = () => {
-  const [data, setData] = useState([]); // State to store sheet data
-  const [loading, setLoading] = useState(true); // State to handle loading state
-  const [error, setError] = useState(null); // State to handle errors
+  const { data, setData } = useContext(DataContext);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // For navigation
 
   // Function to generate Google Maps link
   const getGoogleMapsLink = (address) => {
@@ -26,10 +29,10 @@ const SheetData = () => {
     };
 
     fetchData();
-  }, []);
+  }, [setData]);
 
-  // Function to handle the click on the Completed column
-  const handleComplete = async (index) => {
+  // Function to handle marking a job as completed
+  const handleMarkCompleted = async (index) => {
     try {
       // Update Google Sheets
       await axios.put(`http://localhost:5000/api/update-row/${index + 1}`, {
@@ -40,9 +43,11 @@ const SheetData = () => {
       const updatedData = [...data];
       updatedData[index][7] = 'TRUE'; // Update the 8th column (Completed) to 'TRUE'
       setData(updatedData);
+
+      // Redirect to the Management page for billing
+      navigate('/management', { state: { job: updatedData[index] } });
     } catch (error) {
       console.error('Error updating row:', error);
-      // Optionally, you might want to inform the user if the backend update failed
     }
   };
 
@@ -79,7 +84,7 @@ const SheetData = () => {
               <th className="px-6 py-3 text-left">Email</th>
               <th className="px-6 py-3 text-left">Info</th>
               <th className="px-6 py-3 text-left">Price</th>
-              <th className="px-6 py-3 text-left">Completed</th> {/* New column for checkmark */}
+              <th className="px-6 py-3 text-left">Completed</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -91,13 +96,15 @@ const SheetData = () => {
                     className={`px-6 py-4 text-gray-700 ${
                       i === 7 ? 'cursor-pointer' : ''
                     }`}
-                    onClick={() => i === 7 && handleComplete(index)} // Make only the 8th column clickable
+                    onClick={() => {
+                      if (i === 7) handleMarkCompleted(index); // Click on Completed column
+                    }}
                   >
-                    {i === 7 ? ( // Checkmark in the 8th column (index 7)
+                    {i === 7 ? ( // Completed column (index 7)
                       cell === 'TRUE' ? (
-                        <span className="text-black-600">✓</span> // Display a checkmark if TRUE
+                        <span className="text-green-600">✓</span> // Display a checkmark if TRUE
                       ) : (
-                        <span className="text-gray-400">Click to complete</span> // Placeholder text
+                        <span className="text-gray-400">Mark as completed</span> // Placeholder text
                       )
                     ) : i === 3 ? ( // Address column (index 3)
                       <a

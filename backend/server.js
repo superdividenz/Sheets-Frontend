@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
@@ -34,6 +35,28 @@ app.get('/api/sheet-data', async (req, res) => {
     console.error('Error fetching sheet data:', error.message); // Debugging
     console.error('Error details:', error.response ? error.response.data : 'No additional details'); // Debugging
     res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/mark-paid/:id', async (req, res) => {
+  const { id } = req.params; // Row ID
+  const { paid } = req.body; // New paid status
+
+  try {
+    // Update the 9th column (I) in the specified row
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: process.env.SPREADSHEET_ID,
+      range: `2025!I${id}`, // Update the 9th column (I) for the specified row
+      valueInputOption: 'RAW',
+      resource: {
+        values: [[paid]], // Update the cell with the new paid status
+      },
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error updating row:', error);
+    res.status(500).json({ error: 'Failed to update row' });
   }
 });
 

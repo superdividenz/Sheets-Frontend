@@ -39,6 +39,17 @@ const Header = ({ isLoggedIn, onLogout }) => {
               >
                 Management
               </Link>
+              {/* Add Reports Link */}
+              <Link
+                to="/reports"
+                className={`mr-4 transition-all duration-300 hover:scale-110 ${
+                  isActive('/reports')
+                    ? 'text-gray-400 font-semibold'
+                    : 'text-white hover:text-gray-400'
+                }`}
+              >
+                Reports
+              </Link>
               <button
                 onClick={onLogout}
                 className="text-white hover:text-gray-400 transition-all duration-300 hover:scale-110"
@@ -52,7 +63,7 @@ const Header = ({ isLoggedIn, onLogout }) => {
               className={`transition-all duration-300 hover:scale-110 ${
                 isActive('/login') ? 'text-gray-400 font-semibold' : 'text-white hover:text-gray-400'
               }`}
-            >
+              >
               Login
             </Link>
           )}

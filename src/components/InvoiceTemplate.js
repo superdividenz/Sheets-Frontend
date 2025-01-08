@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333333',
   },
+  contactInfo: {
+    fontSize: 10,
+    color: '#555555',
+    marginTop: 10,
+  },
   section: {
     marginBottom: 20,
   },
@@ -75,11 +80,19 @@ const InvoiceTemplate = ({ job }) => (
     <Page size="A4" style={styles.page}>
       {/* Header */}
       <View style={styles.header}>
-        <Image
-          src={logo} // Use the imported logo
-          style={styles.logo}
-        />
-        <Text style={styles.title}>Invoices</Text>
+        <View>
+          <Image
+            src={logo} // Use the imported logo
+            style={styles.logo}
+          />
+          <View style={styles.contactInfo}>
+            <Text>Wegener Asphalt</Text>
+            <Text>10200 Quail Run Dr. 63128</Text>
+            <Text>Phone: (314)-300-6562</Text>
+            <Text>Website: wegenerasphaltandpaving.com</Text>
+          </View>
+        </View>
+        <Text style={styles.title}>Invoice</Text>
       </View>
 
       {/* Job Details */}
@@ -92,19 +105,19 @@ const InvoiceTemplate = ({ job }) => (
         <Text style={styles.value}>{job.date}</Text>
       </View>
       <View style={styles.section}>
-        <Text style={styles.label}>Customer Name:</Text>
+        <Text style={styles.label}>Name:</Text>
         <Text style={styles.value}>{job.name}</Text>
       </View>
       <View style={styles.section}>
-        <Text style={styles.label}>Customer Email:</Text>
+        <Text style={styles.label}>Email:</Text>
         <Text style={styles.value}>{job.email}</Text>
       </View>
       <View style={styles.section}>
-        <Text style={styles.label}>Customer Phone:</Text>
+        <Text style={styles.label}>Phone:</Text>
         <Text style={styles.value}>{job.phone}</Text>
       </View>
       <View style={styles.section}>
-        <Text style={styles.label}>Customer Address:</Text>
+        <Text style={styles.label}>Address:</Text>
         <Text style={styles.value}>{job.address}</Text>
       </View>
 
@@ -129,7 +142,7 @@ const InvoiceTemplate = ({ job }) => (
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text>Thank you for choosing Wegener Sealing!</Text>
+        <Text>Thank you for choosing Wegener Asphalt!</Text>
       </View>
     </Page>
   </Document>
